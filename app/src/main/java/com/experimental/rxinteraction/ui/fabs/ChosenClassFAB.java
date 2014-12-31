@@ -78,7 +78,6 @@ public class ChosenClassFAB extends FrameLayout {
         }
     }
 
-
     private void cleanUpSubscription(@Nullable Subscription subscription) {
         if (subscription != null && !subscription.isUnsubscribed()) {
             subscription.unsubscribe();
