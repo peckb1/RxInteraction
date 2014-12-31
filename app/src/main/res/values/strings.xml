@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Arena</string>
+
+    <string name="hello_world">Hello world!</string>
+
+    <string name="action_reset">Reset Arena</string>
+    <string name="choose_class_title">Arena - Choose Class</string>
+    <string name="class_image_description">Class Portrait Image</string>
+    <string name="card_image_description">Card Image</string>
+
+</resources>

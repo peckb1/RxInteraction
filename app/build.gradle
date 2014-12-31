@@ -1,0 +1,54 @@
+apply plugin: 'com.android.application'
+
+repositories {
+    // release repo
+    mavenCentral()
+
+    // snapshot repo for Google's Dagger 2.0
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
+}
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "com.experimental.rxinteraction"
+        minSdkVersion 16
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:21.0.3'
+
+    // Dagger
+    compile 'com.google.dagger:dagger-compiler:2.0-SNAPSHOT'
+    compile 'com.google.dagger:dagger:2.0-SNAPSHOT'
+    compile 'javax.annotation:jsr250-api:1.0'
+
+
+    // Butterknife
+    compile 'com.jakewharton:butterknife:6.0.0'
+
+    // RxJava
+    compile 'io.reactivex:rxjava:1.0.4'
+
+    // Guava
+    compile 'com.google.guava:guava:18.0'
+}

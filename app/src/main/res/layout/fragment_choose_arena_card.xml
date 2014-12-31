@@ -1,0 +1,66 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".CardChoiceFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/grid_x7"
+        android:orientation="horizontal">
+
+        <include
+            android:id="@+id/first_card_choice"
+            layout="@layout/card_choice_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <View
+            android:layout_width="3dp"
+            android:layout_height="match_parent"/>
+
+        <include
+            android:id="@+id/second_card_choice"
+            layout="@layout/card_choice_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <View
+            android:layout_width="3dp"
+            android:layout_height="match_parent"/>
+
+        <include
+            android:id="@+id/third_card_choice"
+            layout="@layout/card_choice_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <include
+        android:id="@+id/floating_class_fab"
+        layout="@layout/class_choice_fab_layout"
+        android:layout_width="@dimen/grid_x7"
+        android:layout_height="@dimen/grid_x7"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/keyline_1"
+        android:layout_marginLeft="@dimen/keyline_1"
+        android:layout_marginStart="@dimen/keyline_1"/>
+
+    <include
+        android:id="@+id/floating_card_fab"
+        layout="@layout/card_choice_fab_layout"
+        android:layout_width="@dimen/grid_x7"
+        android:layout_height="@dimen/grid_x7"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/keyline_1"
+        android:layout_marginEnd="@dimen/keyline_1"
+        android:layout_marginRight="@dimen/keyline_1"/>
+
+</RelativeLayout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.experimental.rxinteraction.ui.fabs.ChosenCardsFAB
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/chosen_class_button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/chosen_cards_fab"/>
+
+    <TextView
+        android:id="@+id/card_choice_overall_progress_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="13sp"
+        android:textColor="@android:color/black"
+        android:gravity="center"
+        android:text="XX/YY"/>
+
+</com.experimental.rxinteraction.ui.fabs.ChosenCardsFAB>

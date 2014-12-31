@@ -1,0 +1,31 @@
+<LinearLayout
+    android:id="@+id/arena_class_list"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context=".ClassChoiceFragment">
+
+    <include
+        android:id="@+id/first_class_choice"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        layout="@layout/class_choice_layout"/>
+
+    <include
+        android:id="@+id/second_class_choice"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        layout="@layout/class_choice_layout"/>
+
+    <include
+        android:id="@+id/third_class_choice"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        layout="@layout/class_choice_layout"/>
+
+</LinearLayout>
