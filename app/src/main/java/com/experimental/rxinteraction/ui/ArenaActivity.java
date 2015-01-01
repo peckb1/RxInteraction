@@ -42,11 +42,16 @@ public class ArenaActivity extends ActionBarActivity {
         setContentView(R.layout.activity_arena);
         ((ArenaApplication) getApplication()).component().inject(this);
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new ClassChoiceFragment())
-                    .commit();
-        }
+        showClassChoice();
+    }
+
+    private void showClassChoice() {
+        selectCardSubject.onNext(Either.<ArenaCard, ClearEvent>right(CLEAR));
+        classChoiceProvider.reset();
+        classChoiceSubject.onNext(UN_CHOSEN);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, new ClassChoiceFragment())
+                .commit();
     }
 
     @Override
@@ -77,12 +82,7 @@ public class ArenaActivity extends ActionBarActivity {
 
         switch (id) {
             case R.id.action_reset_draft: {
-                selectCardSubject.onNext(Either.<ArenaCard, ClearEvent>right(CLEAR));
-                classChoiceProvider.reset();
-                classChoiceSubject.onNext(UN_CHOSEN);
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, new ClassChoiceFragment())
-                        .commit();
+                showClassChoice();
                 return true;
             }
         }

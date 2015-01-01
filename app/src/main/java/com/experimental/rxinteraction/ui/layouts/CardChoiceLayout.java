@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.experimental.rxinteraction.ArenaApplication;
 import com.experimental.rxinteraction.ArenaCard;
@@ -22,7 +23,6 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 import rx.Subscription;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -35,14 +35,17 @@ public class CardChoiceLayout extends LinearLayout {
 
     private static final String TAG = CardChoiceLayout.class.getSimpleName();
 
-    @Inject BehaviorSubject<Either<ArenaCard, ClearEvent>> selectCardSubject;
+    @Inject PublishSubject<ArenaCard> selectCardPublishSubject;
+    @Inject BehaviorSubject<Either<ArenaCard, ClearEvent>> selectCardBehaviorSubject;
     @Inject BehaviorSubject<ArenaClass> classChoiceSubject;
     @Inject CardChoiceProvider cardChoiceProvider;
 
     @InjectView(R.id.card_image) ImageView cardImage;
+    @InjectView(R.id.card_details) TextView cardDetailText;
 
     @Nullable Subscription clearStateSubscription;
     @Nullable Subscription createStateSubscription;
+    @Nullable Subscription cardChosenSubscription;
     @Nullable private ArenaCard currentCard;
 
     public CardChoiceLayout(Context context) {
@@ -57,19 +60,24 @@ public class CardChoiceLayout extends LinearLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    @OnClick(R.id.card_image)
-    public void submit(View view) {
-        if (currentCard != null) {
-            selectCardSubject.onNext(Either.<ArenaCard, ClearEvent>left(currentCard));
-        }
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        ButterKnife.reset(this);
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         ButterKnife.inject(this);
-
         ArenaApplication.inject(this);
+
+        cardImage.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submit();
+            }
+        });
 
         if (clearStateSubscription == null || clearStateSubscription.isUnsubscribed()) {
             clearStateSubscription = classChoiceSubject.filter(isResetEvent())
@@ -79,6 +87,19 @@ public class CardChoiceLayout extends LinearLayout {
         if (createStateSubscription == null || createStateSubscription.isUnsubscribed()) {
             createStateSubscription = classChoiceSubject.filter(isNotResetEvent())
                     .subscribe(handleChosenClassEvent(), handleChosenClassFailure());
+        }
+
+        if (cardChosenSubscription == null || cardChosenSubscription.isUnsubscribed()) {
+            cardChosenSubscription = selectCardPublishSubject.subscribe(handleCardChosen(), handleCardChosenFailure());
+        }
+    }
+
+    private void submit() {
+        if (currentCard != null) {
+            ArenaCard card = currentCard;
+
+            selectCardPublishSubject.onNext(card);
+            selectCardBehaviorSubject.onNext(Either.<ArenaCard, ClearEvent>left(card));
         }
     }
 
@@ -90,6 +111,16 @@ public class CardChoiceLayout extends LinearLayout {
 
     // success
 
+    private Action1<? super ArenaCard> handleCardChosen() {
+        return new Action1<ArenaCard>() {
+            @Override
+            public void call(ArenaCard card) {
+                shutDownSubscriptions();
+                currentCard = null;
+            }
+        };
+    }
+
     private Action1<? super ArenaClass> handleChosenClassEvent() {
         return new Action1<ArenaClass>() {
             @Override
@@ -100,6 +131,10 @@ public class CardChoiceLayout extends LinearLayout {
                     ArenaCard arenaCard = card.get();
                     currentCard = arenaCard;
                     cardImage.setImageResource(arenaCard.getImageResource());
+                    String description = String.format("%d cost %s\nfor %s", arenaCard.getCost(),
+                            arenaCard.getQuality().toString(),
+                            arenaClass.toString());
+                    cardDetailText.setText(description);
                 }
             }
         };
@@ -109,13 +144,29 @@ public class CardChoiceLayout extends LinearLayout {
         return new Action1<ArenaClass>() {
             @Override
             public void call(ArenaClass arenaClass) {
-                cleanUpSubscription(clearStateSubscription);
-                cleanUpSubscription(createStateSubscription);
+                shutDownSubscriptions();
             }
         };
     }
 
+    private void shutDownSubscriptions() {
+        cleanUpSubscription(clearStateSubscription);
+        cleanUpSubscription(createStateSubscription);
+        cleanUpSubscription(cardChosenSubscription);
+    }
+
     // errors
+
+    private Action1<Throwable> handleCardChosenFailure() {
+        return new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                if (BuildConfig.DEBUG) {
+                    Log.e(TAG, throwable.getMessage(), throwable);
+                }
+            }
+        };
+    }
 
     private Action1<Throwable> handleResetFailure() {
         return new Action1<Throwable>() {

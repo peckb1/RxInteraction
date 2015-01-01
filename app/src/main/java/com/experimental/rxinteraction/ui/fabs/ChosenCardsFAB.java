@@ -13,7 +13,6 @@ import com.experimental.rxinteraction.BuildConfig;
 import com.experimental.rxinteraction.R;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.inject.Inject;
 

@@ -18,7 +18,6 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 import rx.subjects.BehaviorSubject;
 
 public class ClassChoiceLayout extends LinearLayout {
@@ -30,13 +29,6 @@ public class ClassChoiceLayout extends LinearLayout {
     @InjectView(R.id.class_name) TextView classDescription;
 
     @Nullable ArenaClass arenaClass;
-
-    @OnClick(R.id.class_portrait)
-    public void submit(View view) {
-        if (arenaClass != null) {
-            classChoiceSubject.onNext(arenaClass);
-        }
-    }
 
     public ClassChoiceLayout(Context context) {
         super(context);
@@ -51,16 +43,35 @@ public class ClassChoiceLayout extends LinearLayout {
     }
 
     @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        ButterKnife.reset(this);
+    }
+
+    @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         ButterKnife.inject(this);
         ArenaApplication.inject(this);
+
+        classPortrait.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submit();
+            }
+        });
 
         Optional<ArenaClass> nextClass = classChoiceProvider.getNextClass();
         if (nextClass.isPresent()) {
             arenaClass = nextClass.get();
             classPortrait.setImageResource(arenaClass.getDrawable());
             classDescription.setText(arenaClass.toString());
+        }
+    }
+
+    private void submit() {
+        if (arenaClass != null) {
+            classChoiceSubject.onNext(arenaClass);
         }
     }
 }

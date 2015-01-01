@@ -4,42 +4,12 @@
                 android:layout_height="match_parent"
                 tools:context=".CardChoiceFragment">
 
-    <LinearLayout
+    <include
+        android:id="@+id/current_card_choices"
+        layout="@layout/card_choices_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/grid_x7"
-        android:orientation="horizontal">
-
-        <include
-            android:id="@+id/first_card_choice"
-            layout="@layout/card_choice_layout"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
-
-        <View
-            android:layout_width="3dp"
-            android:layout_height="match_parent"/>
-
-        <include
-            android:id="@+id/second_card_choice"
-            layout="@layout/card_choice_layout"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
-
-        <View
-            android:layout_width="3dp"
-            android:layout_height="match_parent"/>
-
-        <include
-            android:id="@+id/third_card_choice"
-            layout="@layout/card_choice_layout"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
-
-    </LinearLayout>
+        android:layout_marginBottom="@dimen/grid_x7"/>
 
     <include
         android:id="@+id/floating_class_fab"

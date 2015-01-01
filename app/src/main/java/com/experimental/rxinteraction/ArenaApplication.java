@@ -3,6 +3,8 @@ package com.experimental.rxinteraction;
 import android.app.Application;
 
 import com.experimental.rxinteraction.ui.ArenaActivity;
+import com.experimental.rxinteraction.ui.CardChoiceFragment;
+import com.experimental.rxinteraction.ui.ClassChoiceFragment;
 import com.experimental.rxinteraction.ui.fabs.ChosenCardsFAB;
 import com.experimental.rxinteraction.ui.fabs.ChosenClassFAB;
 import com.experimental.rxinteraction.ui.layouts.CardChoiceLayout;
@@ -19,6 +21,8 @@ public class ArenaApplication extends Application {
     @Component(modules = ArenaModule.class)
     public interface ArenaComponent {
         void inject(ArenaActivity homeActivity);
+
+        void inject(CardChoiceFragment cardChoiceFragment);
 
         void inject(ClassChoiceLayout layout);
         void inject(CardChoiceLayout layout);

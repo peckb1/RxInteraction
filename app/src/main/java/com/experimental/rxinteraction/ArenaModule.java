@@ -1,5 +1,7 @@
 package com.experimental.rxinteraction;
 
+import android.util.Log;
+
 import com.experimental.rxinteraction.util.CardChoiceProvider;
 import com.experimental.rxinteraction.util.ClassChoiceProvider;
 import com.experimental.rxinteraction.util.ClearEvent;
@@ -13,17 +15,21 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import rx.Observable;
-import rx.functions.Func1;
+import rx.functions.Action1;
 import rx.subjects.BehaviorSubject;
-
-import static com.experimental.rxinteraction.util.ClearEvent.CLEAR;
+import rx.subjects.PublishSubject;
 
 @Module
 public class ArenaModule {
 
+    private static final String TAG = ArenaModule.class.getSimpleName();
+
     private final ArenaApplication application;
 
-    private final List<ArenaCard> mEventsSoFar = Lists.newArrayList();
+    private static final List<ArenaCard> mEventsSoFar = Lists.newArrayList();
+
+    private static final BehaviorSubject<List<ArenaCard>> customAllCardsSubject =
+            BehaviorSubject.create();
 
     public ArenaModule(ArenaApplication application) {
         this.application = application;
@@ -49,26 +55,46 @@ public class ArenaModule {
 
     @Provides
     @Singleton
-    BehaviorSubject<Either<ArenaCard, ClearEvent>> provideCardChoiceSubject() {
-        return BehaviorSubject.create(Either.<ArenaCard, ClearEvent>right(CLEAR));
+    PublishSubject<ArenaCard> provideCardChoicePublishSubject() {
+        return PublishSubject.create();
     }
 
     @Provides
     @Singleton
-    Observable<List<ArenaCard>> provideCardChoicesObservable(
-            BehaviorSubject<Either<ArenaCard, ClearEvent>> singleEvent) {
+    BehaviorSubject<Either<ArenaCard, ClearEvent>> provideCardChoiceBehaviorSubject() {
+        BehaviorSubject<Either<ArenaCard, ClearEvent>> behaviorSubject = BehaviorSubject.create();
+        behaviorSubject.subscribe(handleNewEvent(), handleError());
+        return behaviorSubject;
+    }
 
-        return singleEvent.map(new Func1<Either<ArenaCard,ClearEvent>, List<ArenaCard>>() {
+    @Provides
+    @Singleton
+    Observable<List<ArenaCard>> provideCardChoicesObservable() {
+        return customAllCardsSubject.asObservable();
+    }
+
+    private Action1<? super Either<ArenaCard, ClearEvent>> handleNewEvent() {
+        return new Action1<Either<ArenaCard, ClearEvent>>() {
             @Override
-            public List<ArenaCard> call(Either<ArenaCard,ClearEvent> eventEither) {
+            public void call(Either<ArenaCard, ClearEvent> eventEither) {
                 if (eventEither.isRight()) {
                     mEventsSoFar.clear();
-                    return mEventsSoFar;
                 } else {
                     mEventsSoFar.add(eventEither.left());
-                    return mEventsSoFar;
+                }
+                customAllCardsSubject.onNext(mEventsSoFar);
+            }
+        };
+    }
+
+    private Action1<Throwable> handleError() {
+        return new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                if (BuildConfig.DEBUG) {
+                    Log.e(TAG, throwable.getMessage(), throwable);
                 }
             }
-        });
+        };
     }
 }
