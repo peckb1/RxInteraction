@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/chosen_class_button"
+        android:id="@+id/chosen_card_button"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/chosen_cards_fab"/>

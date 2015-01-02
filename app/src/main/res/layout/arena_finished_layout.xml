@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.experimental.rxinteraction.ui.layouts.ArenaFinishedLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/class_portrait"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:contentDescription="@string/class_image_description"/>
+
+    <TextView
+        android:id="@+id/class_name"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textSize="25sp"/>
+
+</com.experimental.rxinteraction.ui.layouts.ArenaFinishedLayout>

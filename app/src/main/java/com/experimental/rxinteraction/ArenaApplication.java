@@ -4,9 +4,10 @@ import android.app.Application;
 
 import com.experimental.rxinteraction.ui.ArenaActivity;
 import com.experimental.rxinteraction.ui.CardChoiceFragment;
-import com.experimental.rxinteraction.ui.ClassChoiceFragment;
+import com.experimental.rxinteraction.ui.dialogs.ChosenCardDialog;
 import com.experimental.rxinteraction.ui.fabs.ChosenCardsFAB;
 import com.experimental.rxinteraction.ui.fabs.ChosenClassFAB;
+import com.experimental.rxinteraction.ui.layouts.ArenaFinishedLayout;
 import com.experimental.rxinteraction.ui.layouts.CardChoiceLayout;
 import com.experimental.rxinteraction.ui.layouts.ClassChoiceLayout;
 import com.experimental.rxinteraction.util.CardChoiceProvider;
@@ -26,11 +27,15 @@ public class ArenaApplication extends Application {
 
         void inject(ClassChoiceLayout layout);
         void inject(CardChoiceLayout layout);
+        void inject(ArenaFinishedLayout arenaFinishedLayout);
 
         void inject(CardChoiceProvider cardChoiceProvider);
 
         void inject(ChosenClassFAB chosenClassFAB);
         void inject(ChosenCardsFAB chosenCardsFAB);
+
+        void inject(ChosenCardDialog dialog);
+
     }
 
     private static ArenaComponent component;
@@ -65,5 +70,13 @@ public class ArenaApplication extends Application {
 
     public static void inject(ChosenCardsFAB fab) {
         component.inject(fab);
+    }
+
+    public static void inject(ChosenCardDialog dialog) {
+        component.inject(dialog);
+    }
+
+    public static void inject(ArenaFinishedLayout arenaFinishedLayout) {
+        component.inject(arenaFinishedLayout);
     }
 }

@@ -1,16 +1,20 @@
 package com.experimental.rxinteraction.ui.fabs;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.experimental.rxinteraction.ArenaApplication;
 import com.experimental.rxinteraction.ArenaCard;
 import com.experimental.rxinteraction.BuildConfig;
 import com.experimental.rxinteraction.R;
+import com.experimental.rxinteraction.ui.dialogs.ChosenCardDialog;
 
 import java.util.List;
 
@@ -18,6 +22,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import rx.Observable;
 import rx.Subscription;
 import rx.functions.Action1;
@@ -42,6 +47,12 @@ public class ChosenCardsFAB extends FrameLayout {
 
     public ChosenCardsFAB(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    @OnClick(R.id.chosen_card_button)
+    public void submit(View view) {
+        ChosenCardDialog dialog = new ChosenCardDialog(getContext());
+        dialog.show();
     }
 
     @Override

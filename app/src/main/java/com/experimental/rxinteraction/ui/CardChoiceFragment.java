@@ -18,15 +18,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 import rx.Observable;
 import rx.Subscription;
 import rx.functions.Action1;
 import rx.functions.Func1;
 
 public class CardChoiceFragment extends Fragment {
-
 
     private static final String TAG = ClassChoiceFragment.class.getSimpleName();
 
@@ -84,10 +81,18 @@ public class CardChoiceFragment extends Fragment {
         return new Action1<List<ArenaCard>>() {
             @Override
             public void call(List<ArenaCard> arenaCards) {
+                int id;
+
+                if (arenaCards.size() == 30) {
+                    id = R.layout.arena_finished_layout;
+                } else {
+                    id = R.layout.card_choices_layout;
+                }
+
                 ViewGroup parent = (ViewGroup) currentCardChoicesLayout.getParent();
                 int index = parent.indexOfChild(currentCardChoicesLayout);
                 parent.removeView(currentCardChoicesLayout);
-                currentCardChoicesLayout = (LinearLayout) inflater.inflate(R.layout.card_choices_layout, parent, false);
+                currentCardChoicesLayout = (LinearLayout) inflater.inflate(id, parent, false);
                 parent.addView(currentCardChoicesLayout, index);
             }
         };

@@ -23,6 +23,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import rx.Subscription;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -60,6 +61,16 @@ public class CardChoiceLayout extends LinearLayout {
         super(context, attrs, defStyleAttr);
     }
 
+    @OnClick(R.id.card_image)
+    public void submit(View view) {
+        if (currentCard != null) {
+            ArenaCard card = currentCard;
+
+            selectCardPublishSubject.onNext(card);
+            selectCardBehaviorSubject.onNext(Either.<ArenaCard, ClearEvent>left(card));
+        }
+    }
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
@@ -71,13 +82,6 @@ public class CardChoiceLayout extends LinearLayout {
         super.onAttachedToWindow();
         ButterKnife.inject(this);
         ArenaApplication.inject(this);
-
-        cardImage.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                submit();
-            }
-        });
 
         if (clearStateSubscription == null || clearStateSubscription.isUnsubscribed()) {
             clearStateSubscription = classChoiceSubject.filter(isResetEvent())
@@ -91,15 +95,6 @@ public class CardChoiceLayout extends LinearLayout {
 
         if (cardChosenSubscription == null || cardChosenSubscription.isUnsubscribed()) {
             cardChosenSubscription = selectCardPublishSubject.subscribe(handleCardChosen(), handleCardChosenFailure());
-        }
-    }
-
-    private void submit() {
-        if (currentCard != null) {
-            ArenaCard card = currentCard;
-
-            selectCardPublishSubject.onNext(card);
-            selectCardBehaviorSubject.onNext(Either.<ArenaCard, ClearEvent>left(card));
         }
     }
 
