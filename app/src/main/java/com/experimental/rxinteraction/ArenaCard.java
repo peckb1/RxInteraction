@@ -32,6 +32,11 @@ public class ArenaCard {
         private int getQualityNumber() {
             return qualityNumber;
         }
+
+        @Override
+        public String toString() {
+            return super.toString().toLowerCase();
+        }
     }
 
     private final int cost;

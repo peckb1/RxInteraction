@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_marginBottom="@dimen/grid_x7"
+              android:orientation="horizontal">
+
+    <include
+        android:id="@+id/first_card_choice"
+        layout="@layout/card_choice_layout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+    <View
+        android:layout_width="3dp"
+        android:layout_height="match_parent"/>
+
+    <include
+        android:id="@+id/second_card_choice"
+        layout="@layout/card_choice_layout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+    <View
+        android:layout_width="3dp"
+        android:layout_height="match_parent"/>
+
+    <include
+        android:id="@+id/third_card_choice"
+        layout="@layout/card_choice_layout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+</LinearLayout>

@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/chosen_class_button"
+        android:id="@+id/chosen_card_button"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/chosen_cards_fab"/>
@@ -14,9 +14,8 @@
         android:id="@+id/card_choice_overall_progress_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="13sp"
+        android:textSize="12sp"
         android:textColor="@android:color/black"
-        android:gravity="center"
-        android:text="XX/YY"/>
+        android:gravity="center"/>
 
 </com.experimental.rxinteraction.ui.fabs.ChosenCardsFAB>

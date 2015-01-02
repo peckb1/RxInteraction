@@ -31,13 +31,6 @@ public class ClassChoiceLayout extends LinearLayout {
 
     @Nullable ArenaClass arenaClass;
 
-    @OnClick(R.id.class_portrait)
-    public void submit(View view) {
-        if (arenaClass != null) {
-            classChoiceSubject.onNext(arenaClass);
-        }
-    }
-
     public ClassChoiceLayout(Context context) {
         super(context);
     }
@@ -48,6 +41,19 @@ public class ClassChoiceLayout extends LinearLayout {
 
     public ClassChoiceLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        ButterKnife.reset(this);
+    }
+
+    @OnClick(R.id.class_portrait)
+    public void submit(View view) {
+        if (arenaClass != null) {
+            classChoiceSubject.onNext(arenaClass);
+        }
     }
 
     @Override

@@ -8,10 +8,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.experimental.rxinteraction.ArenaApplication;
+import com.experimental.rxinteraction.ArenaCard;
 import com.experimental.rxinteraction.BuildConfig;
 import com.experimental.rxinteraction.R;
 import com.experimental.rxinteraction.ArenaClass;
 import com.experimental.rxinteraction.util.ClassChoiceProvider;
+import com.experimental.rxinteraction.util.ClearEvent;
+import com.experimental.rxinteraction.util.Either;
 
 import javax.inject.Inject;
 
@@ -21,11 +24,13 @@ import rx.functions.Func1;
 import rx.subjects.BehaviorSubject;
 
 import static com.experimental.rxinteraction.ArenaClass.UN_CHOSEN;
+import static com.experimental.rxinteraction.util.ClearEvent.CLEAR;
 
 public class ArenaActivity extends ActionBarActivity {
 
     private static final String TAG = ArenaActivity.class.getSimpleName();
 
+    @Inject BehaviorSubject<Either<ArenaCard, ClearEvent>> selectCardSubject;
     @Inject BehaviorSubject<ArenaClass> classChoiceSubject;
     @Inject ClassChoiceProvider classChoiceProvider;
 
@@ -37,11 +42,16 @@ public class ArenaActivity extends ActionBarActivity {
         setContentView(R.layout.activity_arena);
         ((ArenaApplication) getApplication()).component().inject(this);
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new ClassChoiceFragment())
-                    .commit();
-        }
+        showClassChoice();
+    }
+
+    private void showClassChoice() {
+        selectCardSubject.onNext(Either.<ArenaCard, ClearEvent>right(CLEAR));
+        classChoiceProvider.reset();
+        classChoiceSubject.onNext(UN_CHOSEN);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, new ClassChoiceFragment())
+                .commit();
     }
 
     @Override
@@ -72,11 +82,7 @@ public class ArenaActivity extends ActionBarActivity {
 
         switch (id) {
             case R.id.action_reset_draft: {
-                classChoiceProvider.reset();
-                classChoiceSubject.onNext(UN_CHOSEN);
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, new ClassChoiceFragment())
-                        .commit();
+                showClassChoice();
                 return true;
             }
         }
