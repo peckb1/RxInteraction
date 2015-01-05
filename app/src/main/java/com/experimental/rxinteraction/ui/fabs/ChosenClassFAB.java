@@ -25,6 +25,12 @@ import rx.subjects.BehaviorSubject;
 import static android.app.AlertDialog.Builder;
 import static com.experimental.rxinteraction.ArenaClass.UN_CHOSEN;
 
+/**
+ * A Floating Action Button which will (assuming assets) show the hero power for the currently selected
+ * arena class.
+ * <p/>
+ * On selection it describes the hero power's ability - currently through just a simple dialog
+ */
 public class ChosenClassFAB extends FrameLayout {
 
     private static final String TAG = ChosenClassFAB.class.getSimpleName();

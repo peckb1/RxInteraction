@@ -32,6 +32,16 @@ import rx.subjects.PublishSubject;
 
 import static com.experimental.rxinteraction.ArenaClass.UN_CHOSEN;
 
+/**
+ * A custom layout for a single choose-able card inside an arena draft
+ * <p/>
+ * On click of the card picture it alerts on two events; one used globally to count all of the cards chosen
+ * in the current draft; and one more locally used only by this, and the other card choice layouts to disable
+ * the ability to choose a card.
+ * <p/>
+ * The first event would propagate to items such as the containing fragment and chosen card FAB. The second
+ * keeps the user from selecting multiple cards for a single set of choices.
+ */
 public class CardChoiceLayout extends LinearLayout {
 
     private static final String TAG = CardChoiceLayout.class.getSimpleName();

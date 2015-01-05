@@ -21,6 +21,9 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import rx.subjects.BehaviorSubject;
 
+/**
+ * A Custom layout for a specific class to choose from when starting an arena
+ */
 public class ClassChoiceLayout extends LinearLayout {
 
     @Inject ClassChoiceProvider classChoiceProvider;
