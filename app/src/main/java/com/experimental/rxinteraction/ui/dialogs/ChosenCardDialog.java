@@ -25,6 +25,12 @@ import rx.Observable;
 import rx.Subscription;
 import rx.functions.Action1;
 
+/**
+ * A Custom dialog to show the currently chosen cards by the user
+ * <p/>
+ * At the moment just a simple ListView containing the cards; theoretically having the header replaced
+ * with the cost curve would provide more information
+ */
 public class ChosenCardDialog extends Dialog {
 
     private static final String TAG = ChosenCardDialog.class.getSimpleName();
@@ -61,6 +67,18 @@ public class ChosenCardDialog extends Dialog {
 
     }
 
+    @Override
+    public void setOnDismissListener(OnDismissListener listener) {
+        cleanUpSubscription(chosenCardsSubscription);
+        super.setOnDismissListener(listener);
+    }
+
+    private void cleanUpSubscription(@Nullable Subscription subscription) {
+        if (subscription != null && !subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
+        }
+    }
+
     private Action1<Throwable> handleError() {
         return new Action1<Throwable>() {
             @Override
@@ -79,17 +97,5 @@ public class ChosenCardDialog extends Dialog {
                 chosenCardsList.setAdapter(new ChosenCardAdapter(getContext(), arenaCards));
             }
         };
-    }
-
-    @Override
-    public void setOnDismissListener(OnDismissListener listener) {
-        cleanUpSubscription(chosenCardsSubscription);
-        super.setOnDismissListener(listener);
-    }
-
-    private void cleanUpSubscription(@Nullable Subscription subscription) {
-        if (subscription != null && !subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
-        }
     }
 }

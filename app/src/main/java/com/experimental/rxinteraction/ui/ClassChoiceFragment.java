@@ -8,6 +8,10 @@ import android.view.ViewGroup;
 
 import com.experimental.rxinteraction.R;
 
+/**
+ * A fragment containing the views for giving the user the ability to choose a specific class
+ * to start a given arena draft
+ */
 public class ClassChoiceFragment extends Fragment {
 
     @Override

@@ -14,6 +14,11 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 
+/**
+ * Custom Array Adapter for showing the cards that the user has chosen inside a list view
+ * <p/>
+ * Currently nothing more than just a simple text description of the card
+ */
 public class ChosenCardAdapter extends ArrayAdapter<ArenaCard> {
 
     public ChosenCardAdapter(Context context, List<ArenaCard> objects) {

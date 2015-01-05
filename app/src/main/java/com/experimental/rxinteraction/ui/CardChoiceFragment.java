@@ -23,6 +23,10 @@ import rx.Subscription;
 import rx.functions.Action1;
 import rx.functions.Func1;
 
+/**
+ * A fragment containing the views for giving the user the ability to choose a specific card
+ * for the current arena draft.
+ */
 public class CardChoiceFragment extends Fragment {
 
     private static final String TAG = ClassChoiceFragment.class.getSimpleName();

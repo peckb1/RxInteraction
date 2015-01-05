@@ -1,6 +1,5 @@
 package com.experimental.rxinteraction.ui.fabs;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -8,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.experimental.rxinteraction.ArenaApplication;
 import com.experimental.rxinteraction.ArenaCard;
@@ -27,6 +25,12 @@ import rx.Observable;
 import rx.Subscription;
 import rx.functions.Action1;
 
+/**
+ * A Floating Action Button which will show the current number of cards chosen (and the max to choose) for the
+ * current arena draft
+ * <p/>
+ * On Click it shows a detailed list of the previously selected cards
+ */
 public class ChosenCardsFAB extends FrameLayout {
 
     private static final String TAG = ChosenCardsFAB.class.getSimpleName();
@@ -66,6 +70,12 @@ public class ChosenCardsFAB extends FrameLayout {
         }
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        cleanUpSubscription(chosenCardsSubscription);
+    }
+
     private Action1<Throwable> handleError() {
         return new Action1<Throwable>() {
             @Override
@@ -84,12 +94,6 @@ public class ChosenCardsFAB extends FrameLayout {
                 progressText.setText(String.format("%d / 30", cards.size()));
             }
         };
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        cleanUpSubscription(chosenCardsSubscription);
     }
 
     private void cleanUpSubscription(@Nullable Subscription subscription) {

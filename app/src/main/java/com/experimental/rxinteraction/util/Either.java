@@ -7,7 +7,9 @@ import com.google.common.base.Optional;
 /**
  * A Basic Implementation of the Either Monad
  * <p/>
- * An Either itself cannot be created (and aside from its inner classes should never be sub classed.
+ * Ideally a more functional approach would be used so that you could map of the possible object; but this suffices.
+ * <p/>
+ * An Either itself cannot be created (and aside from its inner classes should never be sub classed).
  * <p/>
  * To Create an Either, you need to create a LeftProjection, or a RightProjection.
  * <p/>
@@ -23,6 +25,7 @@ import com.google.common.base.Optional;
  *   } else { // else if (data.isRight()) can be implied due to construction semantics
  *       String numberStr = data.right();
  *   }
+ * <p/>
  *
  * @param <Left> The type of object used for the LeftProjection side of this Either
  * @param <Right> The type of object used for the RightProjection side of this Either

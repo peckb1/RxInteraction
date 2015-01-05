@@ -26,6 +26,12 @@ import rx.subjects.BehaviorSubject;
 import static com.experimental.rxinteraction.ArenaClass.UN_CHOSEN;
 import static com.experimental.rxinteraction.util.ClearEvent.CLEAR;
 
+/**
+ * The Main Activity for running the arena.
+ * <p/>
+ * Currently a single activity is used across the program; swapping in fragments as needed to show
+ * the class or card choice fragments
+ */
 public class ArenaActivity extends ActionBarActivity {
 
     private static final String TAG = ArenaActivity.class.getSimpleName();
@@ -45,22 +51,12 @@ public class ArenaActivity extends ActionBarActivity {
         showClassChoice();
     }
 
-    private void showClassChoice() {
-        selectCardSubject.onNext(Either.<ArenaCard, ClearEvent>right(CLEAR));
-        classChoiceProvider.reset();
-        classChoiceSubject.onNext(UN_CHOSEN);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, new ClassChoiceFragment())
-                .commit();
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
-        if(classChoiceSubscription == null || classChoiceSubscription.isUnsubscribed()) {
+        if (classChoiceSubscription == null || classChoiceSubscription.isUnsubscribed()) {
             classChoiceSubscription = classChoiceSubject.filter(validChoice())
-                                                        .subscribe(handleSuccessfulClassChoice(),
-                                                                   handleClassChoiceFailures());
+                    .subscribe(handleSuccessfulClassChoice(), handleClassChoiceFailures());
         }
     }
 
@@ -88,6 +84,15 @@ public class ArenaActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showClassChoice() {
+        selectCardSubject.onNext(Either.<ArenaCard, ClearEvent>right(CLEAR));
+        classChoiceProvider.reset();
+        classChoiceSubject.onNext(UN_CHOSEN);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, new ClassChoiceFragment())
+                .commit();
     }
 
     private Func1<? super ArenaClass, Boolean> validChoice() {

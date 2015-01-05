@@ -19,6 +19,9 @@ import rx.Subscription;
 import rx.functions.Action1;
 import rx.subjects.BehaviorSubject;
 
+/**
+ * Basic layout for showing the selected class again after all of the cards in the draft have been chosen
+ */
 public class ArenaFinishedLayout extends LinearLayout {
     private static final String TAG = ArenaFinishedLayout.class.getSimpleName();
 

@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+/**
+ * A provider of ArenaClass(es) that the user can select from to start their arena draft
+ */
 public class ClassChoiceProvider {
 
     private static final Random RANDOM = new Random();
@@ -21,6 +24,12 @@ public class ClassChoiceProvider {
         alreadySelectedChoices.clear();
     }
 
+    /**
+     * Returns the next unique class to allow the user to choose from. If no more unique classes are available
+     * to choose from than an absent Optional is returned.
+     *
+     * @return Optionally, a unique class to allow the user to choose for their net arena draft.
+     */
     public synchronized Optional<ArenaClass> getNextClass() {
         if (alreadySelectedChoices.size() == classChoices.size()) {
             return Optional.absent();
